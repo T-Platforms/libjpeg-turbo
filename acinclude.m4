@@ -225,13 +225,13 @@ AC_DEFUN([AC_CHECK_COMPATIBLE_MIPS_MSA_ASSEMBLER_IFELSE],[
   typedef signed char v16i8 __attribute__ ((vector_size(16), aligned(16)));
 
   int  main (void) {
-    int8_t vec1[128] = {0};
+    int8_t vec1[16] = {0};
 
     v16i8 vi8_1;
     v16i8 vi8_3;
     vi8_1 = *((v16i8 *)(vec1));
 
-    memcpy(vec1, &vi8_1, 128);
+    memcpy(vec1, &vi8_1, 16);
     vi8_3 = __builtin_msa_addvi_b (vi8_1, 2);
     return 1;
   }
