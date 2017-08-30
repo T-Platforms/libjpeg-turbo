@@ -1017,3 +1017,17 @@ jsimd_idct_float (j_decompress_ptr cinfo, jpeg_component_info *compptr,
                   JDIMENSION output_col)
 {
 }
+
+GLOBAL(int)
+jsimd_can_huff_encode_one_block (void)
+{
+  return 0;
+}
+
+GLOBAL(JOCTET*)
+jsimd_huff_encode_one_block (void *state, JOCTET *buffer, JCOEFPTR block,
+                             int last_dc_val, c_derived_tbl *dctbl,
+                             c_derived_tbl *actbl)
+{
+  return NULL;
+}

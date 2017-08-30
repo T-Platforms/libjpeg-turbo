@@ -215,29 +215,30 @@ AC_DEFUN([AC_CHECK_COMPATIBLE_MIPS_DSPR2_ASSEMBLER_IFELSE],[
 ])
 
 AC_DEFUN([AC_CHECK_COMPATIBLE_MIPS_MSA_ASSEMBLER_IFELSE],[
-  have_mips_dspr2=no
+  have_mips_msa=no
   ac_save_CFLAGS="$CFLAGS"
   CFLAGS="$CCASFLAGS -mmsa"
 
   AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 
+  #include <stdint.h>
   typedef signed char v16i8 __attribute__ ((vector_size(16), aligned(16)));
 
-  void
-  main(void) {
+  int  main (void) {
     int8_t vec1[128] = {0};
 
     v16i8 vi8_1;
     v16i8 vi8_3;
     vi8_1 = *((v16i8 *)(vec1));
 
-    memcpy(vec3, &vi8_1, WRLEN);
+    memcpy(vec1, &vi8_1, 128);
     vi8_3 = __builtin_msa_addvi_b (vi8_1, 2);
+    return 1;
   }
   ]])], have_mips_msa=yes)
   CFLAGS=$ac_save_CFLAGS
 
-  if test "x$have_mips_msa = "xyes" ; then
+  if test "x$have_mips_msa" = "xyes" ; then
     $1
   else
     $2

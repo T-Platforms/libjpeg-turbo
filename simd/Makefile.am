@@ -65,9 +65,27 @@ libsimd_la_SOURCES = jsimd_arm64.c jsimd_arm64_neon.S
 
 endif
 
-if SIMD_MIPS
+if SIMD_MIPS_DSPR2
 
-libsimd_la_SOURCES = jsimd_mips_dspr2.c jsimd_mips_dspr2_asm.h jsimd_mips_dspr2.S
+libsimd_la_SOURCES = jsimd_mips_dspr2_w.c jsimd_mips_dspr2_asm.h jsimd_mips_dspr2.S
+
+endif
+
+if SIMD_MIPS_MSA
+
+libsimd_la_SOURCES = jsimd_mips_msa.c \
+		jquanti_msa.c \
+		jidct_msa.c \
+		jfdct_msa.c \
+		jdsample_msa.c \
+		jdmrgext_msa.c \
+		jdcolext_msa.c \
+		jdcol565_msa.c \
+		jcsample_msa.c \
+		jcgray_msa.c \
+		jccolext_msa.c
+
+libsimd_la_CFLAGS = -mmsa
 
 endif
 
