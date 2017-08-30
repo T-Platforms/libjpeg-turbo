@@ -502,12 +502,17 @@ if test "x${with_simd}" != "xno"; then
       ;;
     mips*)
       AC_MSG_RESULT([yes (mips)])
-      AC_MSG_CHECKING([if the assembler is GNU-compatible and can be used])
-      AC_CHECK_COMPATIBLE_MIPS_ASSEMBLER_IFELSE(
+      AC_MSG_CHECKING([if the mips-msa assembler is GNU-compatible and can be used])
+      AC_CHECK_COMPATIBLE_MIPS_MSA_ASSEMBLER_IFELSE(
         [AC_MSG_RESULT([yes])
-         simd_arch=mips],
+         simd_arch=mips_msa],
         [AC_MSG_RESULT([no])
-         with_simd=no])
+          AC_MSG_CHECKING([if the mips-dspr2 assembler is GNU-compatible and can be used])
+          AC_CHECK_COMPATIBLE_MIPS_DSPR2_ASSEMBLER_IFELSE(
+          [AC_MSG_RESULT([yes])
+            simd_arch=mips_dspr2],
+          [AC_MSG_RESULT([no])
+            with_simd=no])])
       if test "x${with_simd}" = "xno"; then
         if test "x${require_simd}" = "xyes"; then
           AC_MSG_ERROR([SIMD support can't be enabled.])

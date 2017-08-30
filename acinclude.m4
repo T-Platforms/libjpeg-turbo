@@ -187,7 +187,7 @@ AC_DEFUN([AC_CHECK_COMPATIBLE_ARM_ASSEMBLER_IFELSE],[
 # AC_CHECK_COMPATIBLE_MIPSEL_ASSEMBLER_IFELSE
 # --------------------------
 # Test whether the assembler is suitable and supports MIPS instructions
-AC_DEFUN([AC_CHECK_COMPATIBLE_MIPS_ASSEMBLER_IFELSE],[
+AC_DEFUN([AC_CHECK_COMPATIBLE_MIPS_DSPR2_ASSEMBLER_IFELSE],[
   have_mips_dspr2=no
   ac_save_CFLAGS="$CFLAGS"
   CFLAGS="$CCASFLAGS -mdspr2"
@@ -208,6 +208,36 @@ AC_DEFUN([AC_CHECK_COMPATIBLE_MIPS_ASSEMBLER_IFELSE],[
   CFLAGS=$ac_save_CFLAGS
 
   if test "x$have_mips_dspr2" = "xyes" ; then
+    $1
+  else
+    $2
+  fi
+])
+
+AC_DEFUN([AC_CHECK_COMPATIBLE_MIPS_MSA_ASSEMBLER_IFELSE],[
+  have_mips_dspr2=no
+  ac_save_CFLAGS="$CFLAGS"
+  CFLAGS="$CCASFLAGS -mmsa"
+
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+
+  typedef signed char v16i8 __attribute__ ((vector_size(16), aligned(16)));
+
+  void
+  main(void) {
+    int8_t vec1[128] = {0};
+
+    v16i8 vi8_1;
+    v16i8 vi8_3;
+    vi8_1 = *((v16i8 *)(vec1));
+
+    memcpy(vec3, &vi8_1, WRLEN);
+    vi8_3 = __builtin_msa_addvi_b (vi8_1, 2);
+  }
+  ]])], have_mips_msa=yes)
+  CFLAGS=$ac_save_CFLAGS
+
+  if test "x$have_mips_msa = "xyes" ; then
     $1
   else
     $2
