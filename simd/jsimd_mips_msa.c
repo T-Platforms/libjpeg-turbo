@@ -931,7 +931,7 @@ jsimd_can_idct_islow (void)
     return 0;
 
   if (simd_support & JSIMD_MSA)
-    return 1;
+    return 0;
 
   return 0;
 }
